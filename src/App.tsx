@@ -9,7 +9,7 @@ import Report from './pages/Report'
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/haji-vocabulary-estimator">
       <Layout>
         <Routes>
           <Route path="/" element={<Dashboard />} />
