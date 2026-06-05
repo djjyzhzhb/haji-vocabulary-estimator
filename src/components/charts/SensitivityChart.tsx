@@ -27,16 +27,20 @@ export const SensitivityChart: React.FC<SensitivityChartProps> = ({ data }) => {
   return (
     <div className="h-64">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData}>
+        <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
           <XAxis
             dataKey="param"
             stroke="#64748b"
             tickFormatter={(val) => val.toFixed(2)}
+            tick={{ fontSize: 12 }}
+            height={40}
           />
           <YAxis
             stroke="#64748b"
             tickFormatter={(val) => val >= 1000000 ? `${(val / 1000000).toFixed(1)}M` : val >= 1000 ? `${(val / 1000).toFixed(0)}K` : val}
+            tick={{ fontSize: 12 }}
+            width={60}
           />
           <Tooltip
             formatter={(val: number) => val.toLocaleString()}

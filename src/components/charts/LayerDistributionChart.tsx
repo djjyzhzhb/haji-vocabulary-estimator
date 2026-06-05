@@ -57,14 +57,14 @@ export const LayerDistributionChart: React.FC<LayerDistributionChartProps> = ({ 
         }
       `}} />
       <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
+        <PieChart margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
           <Pie
             data={chartData}
             cx="50%"
             cy="50%"
-            labelLine={false}
+            labelLine={true}
             label={({ name, percent }) => `${name} ${(percent * 100).toFixed(1)}%`}
-            outerRadius={100}
+            outerRadius={90}
             innerRadius={0}
             fill="#8884d8"
             dataKey="value"
@@ -87,7 +87,7 @@ export const LayerDistributionChart: React.FC<LayerDistributionChartProps> = ({ 
               boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
             }}
           />
-          <Legend wrapperStyle={{ paddingTop: '20px' }} />
+          <Legend wrapperStyle={{ paddingTop: '20px' }} iconType="circle" />
         </PieChart>
       </ResponsiveContainer>
     </div>

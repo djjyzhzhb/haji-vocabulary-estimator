@@ -42,10 +42,10 @@ export const EnhancedLengthDistributionChart: React.FC<EnhancedLengthDistributio
   };
 
   const renderLinearChart = () => (
-    <BarChart data={chartData}>
+    <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
       <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-      <XAxis dataKey="length" stroke="#64748b" />
-      <YAxis stroke="#64748b" tickFormatter={formatYAxis} />
+      <XAxis dataKey="length" stroke="#64748b" tick={{ fontSize: 12 }} height={40} />
+      <YAxis stroke="#64748b" tickFormatter={formatYAxis} tick={{ fontSize: 12 }} width={60} />
       <Tooltip
         formatter={(val: number) => val.toLocaleString()}
         contentStyle={{
@@ -55,7 +55,7 @@ export const EnhancedLengthDistributionChart: React.FC<EnhancedLengthDistributio
           boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
         }}
       />
-      <Legend wrapperStyle={{ paddingTop: '20px' }} />
+      <Legend wrapperStyle={{ paddingTop: '20px' }} iconType="rect" />
       <Bar dataKey="共时" fill={COLORS.synchronic} radius={[4, 4, 0, 0]} />
       <Bar dataKey="一级扩展" fill={COLORS.primaryExtension} radius={[4, 4, 0, 0]} />
       <Bar dataKey="二级扩展" fill={COLORS.secondaryExtension} radius={[4, 4, 0, 0]} />
@@ -72,10 +72,10 @@ export const EnhancedLengthDistributionChart: React.FC<EnhancedLengthDistributio
     }));
 
     return (
-      <BarChart data={logData}>
+      <BarChart data={logData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-        <XAxis dataKey="length" stroke="#64748b" />
-        <YAxis stroke="#64748b" scale="log" domain={['auto', 'auto']} tickFormatter={formatYAxis} />
+        <XAxis dataKey="length" stroke="#64748b" tick={{ fontSize: 12 }} height={40} />
+        <YAxis stroke="#64748b" scale="log" domain={['auto', 'auto']} tickFormatter={formatYAxis} tick={{ fontSize: 12 }} width={60} />
         <Tooltip
           formatter={(val: number) => val.toLocaleString()}
           contentStyle={{
@@ -85,7 +85,7 @@ export const EnhancedLengthDistributionChart: React.FC<EnhancedLengthDistributio
             boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
           }}
         />
-        <Legend wrapperStyle={{ paddingTop: '20px' }} />
+        <Legend wrapperStyle={{ paddingTop: '20px' }} iconType="rect" />
         <Bar dataKey="共时" fill={COLORS.synchronic} radius={[4, 4, 0, 0]} />
         <Bar dataKey="一级扩展" fill={COLORS.primaryExtension} radius={[4, 4, 0, 0]} />
         <Bar dataKey="二级扩展" fill={COLORS.secondaryExtension} radius={[4, 4, 0, 0]} />
@@ -134,35 +134,38 @@ export const EnhancedLengthDistributionChart: React.FC<EnhancedLengthDistributio
 
   return (
     <div>
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-sm text-slate-600">显示模式:</span>
-        <div className="flex gap-1 bg-slate-100 rounded-lg p-1">
+      <div className="flex items-center gap-3 mb-6">
+        <span className="text-sm font-semibold text-slate-700 flex items-center gap-1">
+          <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+          显示模式:
+        </span>
+        <div className="flex gap-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-1.5 border border-blue-100 shadow-inner">
           <button
             onClick={() => setYAxisMode('linear')}
-            className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
               yAxisMode === 'linear'
-                ? 'bg-white text-slate-800 shadow-sm'
-                : 'text-slate-600 hover:text-slate-800'
+                ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md transform scale-105'
+                : 'text-slate-600 hover:text-blue-600 hover:bg-white/60'
             }`}
           >
             线性
           </button>
           <button
             onClick={() => setYAxisMode('log')}
-            className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
               yAxisMode === 'log'
-                ? 'bg-white text-slate-800 shadow-sm'
-                : 'text-slate-600 hover:text-slate-800'
+                ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md transform scale-105'
+                : 'text-slate-600 hover:text-blue-600 hover:bg-white/60'
             }`}
           >
             对数
           </button>
           <button
             onClick={() => setYAxisMode('separate')}
-            className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
               yAxisMode === 'separate'
-                ? 'bg-white text-slate-800 shadow-sm'
-                : 'text-slate-600 hover:text-slate-800'
+                ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md transform scale-105'
+                : 'text-slate-600 hover:text-blue-600 hover:bg-white/60'
             }`}
           >
             分拆

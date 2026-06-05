@@ -35,8 +35,7 @@ export const KPICard: React.FC<KPICardProps> = ({
   const formatValue = (val: number) => {
     switch (format) {
       case 'short':
-        if (val >= 1000000) return (val / 1000000).toFixed(2) + 'M';
-        if (val >= 1000) return (val / 1000).toFixed(1) + 'K';
+        if (val >= 10000) return (val / 10000).toFixed(2) + '万';
         return val.toLocaleString();
       case 'percent':
         return (val * 100).toFixed(1) + '%';

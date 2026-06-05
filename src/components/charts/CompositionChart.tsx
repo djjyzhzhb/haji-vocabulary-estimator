@@ -15,14 +15,14 @@ export const CompositionChart: React.FC<CompositionChartProps> = ({ data }) => {
   return (
     <div className="h-80">
       <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
+        <PieChart margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
           <Pie
             data={data}
             cx="50%"
             cy="50%"
-            labelLine={false}
-            outerRadius={100}
-            innerRadius={60}
+            labelLine={true}
+            outerRadius={90}
+            innerRadius={40}
             fill="#8884d8"
             dataKey="value"
             label={({ name, percent }) => `${name} ${(percent * 100).toFixed(1)}%`}
@@ -40,7 +40,7 @@ export const CompositionChart: React.FC<CompositionChartProps> = ({ data }) => {
               boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
             }}
           />
-          <Legend wrapperStyle={{ paddingTop: '20px' }} />
+          <Legend wrapperStyle={{ paddingTop: '20px' }} iconType="circle" />
         </PieChart>
       </ResponsiveContainer>
     </div>
