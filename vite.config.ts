@@ -5,8 +5,8 @@ import { traeBadgePlugin } from 'vite-plugin-trae-solo-badge';
 
 // https://vite.dev/config/
 export default defineConfig({
-  // GitHub Pages部署时需要设置正确的base路径，这里先用'/'，后续根据仓库名调整
-  base: '/',
+  // GitHub Pages部署时需要设置正确的base路径
+  base: '/haji-vocabulary-estimator/',
   build: {
     sourcemap: 'hidden',
     outDir: 'dist',
