@@ -1,5 +1,6 @@
 import { StateCreator } from 'zustand';
-import { CalculationResult } from '../../types';
+import { CalculationResult, ModelParams } from '../../types';
+import { ResultSlice, ParamsSlice } from './';
 
 export interface HistorySlice {
   history: CalculationResult[];
@@ -55,5 +56,3 @@ export const createHistorySlice: StateCreator<HistorySlice & ResultSlice & Param
     localStorage.removeItem('vocab_estimator_history');
   },
 });
-
-import { ResultSlice, ParamsSlice } from './';

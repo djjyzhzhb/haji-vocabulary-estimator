@@ -1,6 +1,7 @@
 import { StateCreator } from 'zustand';
 import { CalculationResult, ModelParams } from '../../types';
 import { calculate } from '../../engine/calculator';
+import { ParamsSlice } from './paramsSlice';
 
 export interface ResultSlice {
   result: CalculationResult | null;
@@ -16,5 +17,3 @@ export const createResultSlice: StateCreator<ResultSlice & ParamsSlice, [], [], 
     set({ result });
   },
 });
-
-import { ParamsSlice } from './paramsSlice';

@@ -1,5 +1,7 @@
 import { StateCreator } from 'zustand';
 import { ModelParams, DEFAULT_PARAMS } from '../../types';
+import { calculate } from '../../engine/calculator';
+import { ResultSlice } from './resultSlice';
 
 export interface ParamsSlice {
   params: ModelParams;
@@ -8,14 +10,22 @@ export interface ParamsSlice {
   resetParams: () => void;
 }
 
-export const createParamsSlice: StateCreator<ParamsSlice, [], [], ParamsSlice> = (set) => ({
+export const createParamsSlice: StateCreator<ParamsSlice & ResultSlice, [], [], ParamsSlice> = (set, get) => ({
   params: { ...DEFAULT_PARAMS },
 
-  updateParam: (key, value) => set((state) => ({
-    params: { ...state.params, [key]: value },
-  })),
+  updateParam: (key, value) => {
+    const newParams = { ...get().params, [key]: value };
+    const newResult = calculate(newParams);
+    set({ params: newParams, result: newResult });
+  },
 
-  setParams: (params) => set({ params }),
+  setParams: (params) => {
+    const newResult = calculate(params);
+    set({ params, result: newResult });
+  },
 
-  resetParams: () => set({ params: { ...DEFAULT_PARAMS } }),
+  resetParams: () => {
+    const newResult = calculate(DEFAULT_PARAMS);
+    set({ params: { ...DEFAULT_PARAMS }, result: newResult });
+  },
 });
