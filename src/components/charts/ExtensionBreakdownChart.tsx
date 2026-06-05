@@ -6,8 +6,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
+  Cell,
 } from 'recharts';
 import { COLORS } from '../../config/colors';
 import { CalculationResult } from '../../types';
@@ -18,27 +18,29 @@ interface ExtensionBreakdownChartProps {
 
 export const ExtensionBreakdownChart: React.FC<ExtensionBreakdownChartProps> = ({ result }) => {
   const chartData = [
-    {
-      name: '一级扩展',
-      新语素词干: result.primaryExtension.delta_stem,
-      前置池扩展: result.primaryExtension.delta_prefix,
-      新语素派生: result.primaryExtension.delta_deriv,
-      复合词干再派生: result.primaryExtension.delta_rederiv_stem,
-      原始再派生: result.primaryExtension.delta_rederiv_prefix,
-    },
+    { name: '新语素词干', value: result.primaryExtension.delta_stem, fill: COLORS.deltaStem },
+    { name: '前置池扩展', value: result.primaryExtension.delta_prefix, fill: COLORS.deltaPrefix },
+    { name: '新语素派生', value: result.primaryExtension.delta_deriv, fill: COLORS.deltaDeriv },
+    { name: '复合词干再派生', value: result.primaryExtension.delta_rederiv_stem, fill: COLORS.deltaReDerivStem },
+    { name: '原始再派生', value: result.primaryExtension.delta_rederiv_prefix, fill: COLORS.deltaReDerivPrefix },
   ];
+
+  const formatXAxis = (val: number) => {
+    if (val >= 10000) return `${(val / 10000).toFixed(1)}万`;
+    return val.toString();
+  };
 
   return (
     <div className="h-80">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={chartData} layout="vertical" margin={{ left: 20, right: 30, top: 20, bottom: 20 }}>
+        <BarChart data={chartData} layout="vertical" margin={{ left: 10, right: 30, top: 10, bottom: 10 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-          <XAxis type="number" stroke="#64748b" tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val} />
+          <XAxis type="number" stroke="#64748b" tickFormatter={formatXAxis} tick={{ fontSize: 12 }} />
           <YAxis 
             dataKey="name" 
             type="category" 
             stroke="#64748b" 
-            width={120} 
+            width={100} 
             tick={{ fontSize: 11 }}
             interval={0}
           />
@@ -51,12 +53,11 @@ export const ExtensionBreakdownChart: React.FC<ExtensionBreakdownChartProps> = (
               boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
             }}
           />
-          <Legend wrapperStyle={{ paddingTop: '20px', fontSize: '12px' }} />
-          <Bar dataKey="新语素词干" fill={COLORS.deltaStem} radius={[0, 4, 4, 0]} />
-          <Bar dataKey="前置池扩展" fill={COLORS.deltaPrefix} radius={[0, 4, 4, 0]} />
-          <Bar dataKey="新语素派生" fill={COLORS.deltaDeriv} radius={[0, 4, 4, 0]} />
-          <Bar dataKey="复合词干再派生" fill={COLORS.deltaReDerivStem} radius={[0, 4, 4, 0]} />
-          <Bar dataKey="原始再派生" fill={COLORS.deltaReDerivPrefix} radius={[0, 4, 4, 0]} />
+          <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+            {chartData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={entry.fill} />
+            ))}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>

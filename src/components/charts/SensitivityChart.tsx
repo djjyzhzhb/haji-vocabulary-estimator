@@ -38,7 +38,7 @@ export const SensitivityChart: React.FC<SensitivityChartProps> = ({ data }) => {
           />
           <YAxis
             stroke="#64748b"
-            tickFormatter={(val) => val >= 1000000 ? `${(val / 1000000).toFixed(1)}M` : val >= 1000 ? `${(val / 1000).toFixed(0)}K` : val}
+            tickFormatter={(val) => val >= 10000 ? `${(val / 10000).toFixed(1)}万` : val}
             tick={{ fontSize: 12 }}
             width={60}
           />

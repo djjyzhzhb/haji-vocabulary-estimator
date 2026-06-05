@@ -45,17 +45,17 @@ export const KPICard: React.FC<KPICardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between mb-4">
-        <div className={`p-3 rounded-xl ${iconBgClasses[color]}`}>
-          <Icon className={`w-6 h-6 ${colorClasses[color]}`} />
+    <div className="bg-white rounded-2xl px-4 py-4 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+      <div className="flex items-start justify-between mb-3">
+        <div className={`p-2 rounded-lg ${iconBgClasses[color]}`}>
+          <Icon className={`w-5 h-5 ${colorClasses[color]}`} />
         </div>
       </div>
-      <h3 className="text-sm font-medium text-slate-500 mb-1">{title}</h3>
-      <div className="text-2xl font-bold text-slate-800 mb-1">
+      <h3 className="text-xs font-medium text-slate-500 mb-1">{title}</h3>
+      <div className="text-xl font-bold text-slate-800 mb-0.5 truncate">
         {formatValue(value)}
       </div>
-      {subtitle && <p className="text-xs text-slate-400">{subtitle}</p>}
+      {subtitle && <p className="text-xs text-slate-400 truncate">{subtitle}</p>}
     </div>
   );
 };

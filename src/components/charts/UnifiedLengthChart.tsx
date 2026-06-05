@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Cell,
 } from 'recharts';
 import { COLORS } from '../../config/colors';
 import { CalculationResult } from '../../types';
@@ -74,40 +75,56 @@ export const UnifiedLengthChart: React.FC<UnifiedLengthChartProps> = ({ result }
     const chartData = getChartData();
     return (
       <div className="grid grid-cols-2 gap-4">
-        {chartData.map((item, idx) => (
-          <div key={idx} className="bg-slate-50 rounded-xl p-4">
-            <h4 className="text-sm font-semibold text-slate-700 mb-3">{item.length}</h4>
-            <div className="h-40">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart 
-                  data={Object.entries(item)
-                    .filter(([key]) => key !== 'length')
-                    .map(([name, value]) => ({ name, value }))}
-                  layout="vertical"
-                  margin={{ left: 10, right: 10, top: 10, bottom: 10 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis type="number" tickFormatter={formatYAxis} tick={{ fontSize: 10 }} />
-                  <YAxis 
-                    dataKey="name" 
-                    type="category" 
-                    width={70} 
-                    tick={{ fontSize: 10 }} 
-                  />
-                  <Tooltip 
-                    formatter={(val: number) => val.toLocaleString()}
-                    contentStyle={{ borderRadius: '8px' }}
-                  />
-                  <Bar 
-                    dataKey="value" 
-                    fill={getBarColors()[0] || COLORS.synchronic} 
-                    radius={[0, 4, 4, 0]} 
-                  />
-                </BarChart>
-              </ResponsiveContainer>
+        {chartData.map((item, idx) => {
+          const separateData = Object.entries(item)
+            .filter(([key]) => key !== 'length')
+            .map(([name, value]) => ({ name, value }));
+          const maxVal = Math.max(...separateData.map(d => d.value), 1);
+          return (
+            <div key={idx} className="bg-slate-50 rounded-xl p-4">
+              <h4 className="text-sm font-semibold text-slate-700 mb-3">{item.length}</h4>
+              <div className="h-40">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart 
+                    data={separateData}
+                    layout="vertical"
+                    margin={{ left: 5, right: 20, top: 5, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <XAxis 
+                      type="number" 
+                      tickFormatter={formatYAxis} 
+                      tick={{ fontSize: 9 }}
+                      domain={[0, maxVal * 1.1]}
+                    />
+                    <YAxis 
+                      dataKey="name" 
+                      type="category" 
+                      width={65} 
+                      tick={{ fontSize: 10 }}
+                      interval={0}
+                    />
+                    <Tooltip 
+                      formatter={(val: number) => val.toLocaleString()}
+                      contentStyle={{ borderRadius: '8px' }}
+                    />
+                    <Bar 
+                      dataKey="value"
+                      radius={[0, 3, 3, 0]} 
+                    >
+                      {separateData.map((_, i) => (
+                        <Cell 
+                          key={`cell-${idx}-${i}`} 
+                          fill={getBarColors()[i % getBarColors().length] || COLORS.synchronic} 
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     );
   };
