@@ -1,0 +1,163 @@
+import React, { useMemo, useState } from 'react';
+import { BarChart3, PieChart, Table, TrendingUp, Layers, Type, Box, Ruler } from 'lucide-react';
+import { useAppStore } from '../store';
+import { EnhancedLengthDistributionChart } from '../components/charts/EnhancedLengthDistributionChart';
+import { LayerDistributionChart } from '../components/charts/LayerDistributionChart';
+import { WordTypeChart } from '../components/charts/WordTypeChart';
+import { ExtensionBreakdownChart } from '../components/charts/ExtensionBreakdownChart';
+import { DetailedLengthCompositionChart } from '../components/charts/DetailedLengthCompositionChart';
+import { KPICard } from '../components/common/KPICard';
+import { ResultsTable } from '../components/tables/ResultsTable';
+
+type ViewMode = 'charts' | 'table';
+
+const Results: React.FC = () => {
+  const { result } = useAppStore();
+  const [viewMode, setViewMode] = useState<ViewMode>('charts');
+
+  if (!result) return null;
+
+  const lengthData = useMemo(() => {
+    const lengths = [1, 2, 3, 4];
+    return {
+      synchronic: lengths.map((l) => result.synchronic[l]),
+      primary: lengths.map((l) => result.primaryExtension[l]),
+      secondary: lengths.map((l) => result.secondaryExtension[l]),
+    };
+  }, [result]);
+
+  const layerData = useMemo(() => {
+    return {
+      synchronic: result.synchronic.total,
+      primary: result.primaryExtension.total,
+      secondary: result.secondaryExtension.total,
+    };
+  }, [result]);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-start justify-between mb-2">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">结果展示</h1>
+          <p className="text-slate-500">以词长度(L)为核心的多维度可视化分析</p>
+        </div>
+        <div className="flex items-center gap-2 p-1 bg-slate-100 rounded-xl">
+          <button
+            onClick={() => setViewMode('charts')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              viewMode === 'charts'
+                ? 'bg-white text-slate-800 shadow-sm'
+                : 'text-slate-600 hover:text-slate-800'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <BarChart3 className="w-4 h-4" />
+              图表
+            </div>
+          </button>
+          <button
+            onClick={() => setViewMode('table')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              viewMode === 'table'
+                ? 'bg-white text-slate-800 shadow-sm'
+                : 'text-slate-600 hover:text-slate-800'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Table className="w-4 h-4" />
+              表格
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <KPICard
+          title="共时模型"
+          value={result.synchronic.total}
+          icon={Layers}
+          color="blue"
+          format="short"
+        />
+        <KPICard
+          title="一级扩展"
+          value={result.primaryExtension.total}
+          icon={TrendingUp}
+          color="emerald"
+          format="short"
+        />
+        <KPICard
+          title="二级扩展"
+          value={result.secondaryExtension.total}
+          icon={TrendingUp}
+          color="amber"
+          format="short"
+        />
+        <KPICard
+          title="总计"
+          value={result.total}
+          icon={BarChart3}
+          color="purple"
+          format="short"
+        />
+      </div>
+
+      {viewMode === 'charts' ? (
+        <div className="space-y-6">
+          {/* 第一行：以L为核心的图表 */}
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+              <h3 className="text-lg font-semibold text-slate-800 mb-6 flex items-center gap-2">
+                <Ruler className="w-5 h-5 text-blue-500" />
+                词汇长度分布 (多模式)
+              </h3>
+              <EnhancedLengthDistributionChart data={lengthData} />
+            </div>
+          </div>
+
+          {/* 第二行：详细构成图表 */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+              <h3 className="text-lg font-semibold text-slate-800 mb-6 flex items-center gap-2">
+                <Layers className="w-5 h-5 text-emerald-500" />
+                总体层级分布
+              </h3>
+              <LayerDistributionChart data={layerData} />
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+              <h3 className="text-lg font-semibold text-slate-800 mb-6 flex items-center gap-2">
+                <Type className="w-5 h-5 text-purple-500" />
+                各层级词类型分布 (比例)
+              </h3>
+              <WordTypeChart result={result} />
+            </div>
+          </div>
+
+          {/* 第三行：按L的详细构成 */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+              <h3 className="text-lg font-semibold text-slate-800 mb-6 flex items-center gap-2">
+                <Ruler className="w-5 h-5 text-amber-500" />
+                按词长度(L)的详细构成
+              </h3>
+              <DetailedLengthCompositionChart result={result} />
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+              <h3 className="text-lg font-semibold text-slate-800 mb-6 flex items-center gap-2">
+                <Box className="w-5 h-5 text-pink-500" />
+                一级扩展内部构成
+              </h3>
+              <ExtensionBreakdownChart result={result} />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <ResultsTable result={result} />
+      )}
+    </div>
+  );
+};
+
+export default Results;
