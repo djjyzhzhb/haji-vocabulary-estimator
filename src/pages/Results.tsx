@@ -1,11 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { BarChart3, PieChart, Table, TrendingUp, Layers, Type, Box, Ruler } from 'lucide-react';
 import { useAppStore } from '../store';
-import { EnhancedLengthDistributionChart } from '../components/charts/EnhancedLengthDistributionChart';
+import { UnifiedLengthChart } from '../components/charts/UnifiedLengthChart';
 import { LayerDistributionChart } from '../components/charts/LayerDistributionChart';
 import { WordTypeChart } from '../components/charts/WordTypeChart';
 import { ExtensionBreakdownChart } from '../components/charts/ExtensionBreakdownChart';
-import { DetailedLengthCompositionChart } from '../components/charts/DetailedLengthCompositionChart';
 import { KPICard } from '../components/common/KPICard';
 import { ResultsTable } from '../components/tables/ResultsTable';
 
@@ -16,15 +15,6 @@ const Results: React.FC = () => {
   const [viewMode, setViewMode] = useState<ViewMode>('charts');
 
   if (!result) return null;
-
-  const lengthData = useMemo(() => {
-    const lengths = [1, 2, 3, 4];
-    return {
-      synchronic: lengths.map((l) => result.synchronic[l]),
-      primary: lengths.map((l) => result.primaryExtension[l]),
-      secondary: lengths.map((l) => result.secondaryExtension[l]),
-    };
-  }, [result]);
 
   const layerData = useMemo(() => {
     return {
@@ -104,18 +94,18 @@ const Results: React.FC = () => {
 
       {viewMode === 'charts' ? (
         <div className="space-y-6">
-          {/* 第一行：以L为核心的图表 */}
+          {/* 第一行：统一的综合图表 */}
           <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
               <h3 className="text-lg font-semibold text-slate-800 mb-6 flex items-center gap-2">
                 <Ruler className="w-5 h-5 text-blue-500" />
-                词汇长度分布 (多模式)
+                词汇长度分布综合分析
               </h3>
-              <EnhancedLengthDistributionChart data={lengthData} />
+              <UnifiedLengthChart result={result} />
             </div>
           </div>
 
-          {/* 第二行：详细构成图表 */}
+          {/* 第二行：其他图表 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
               <h3 className="text-lg font-semibold text-slate-800 mb-6 flex items-center gap-2">
@@ -134,16 +124,8 @@ const Results: React.FC = () => {
             </div>
           </div>
 
-          {/* 第三行：按L的详细构成 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-              <h3 className="text-lg font-semibold text-slate-800 mb-6 flex items-center gap-2">
-                <Ruler className="w-5 h-5 text-amber-500" />
-                按词长度(L)的详细构成
-              </h3>
-              <DetailedLengthCompositionChart result={result} />
-            </div>
-
+          {/* 第三行：扩展构成 */}
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
               <h3 className="text-lg font-semibold text-slate-800 mb-6 flex items-center gap-2">
                 <Box className="w-5 h-5 text-pink-500" />
