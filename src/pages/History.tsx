@@ -3,6 +3,7 @@ import { History as HistoryIcon, Clock, Trash2, RotateCcw, ChevronDown, ChevronU
 import { useAppStore } from '../store';
 import { PARAM_CONFIGS } from '../config/params';
 import { ModelParams } from '../types';
+import { toast } from '../components/common/Toast';
 
 const DEFAULT_PARAMS: ModelParams = {
   n: 192,
@@ -69,6 +70,7 @@ const History: React.FC = () => {
                   onClick={() => {
                     clearHistory();
                     setConfirmClear(false);
+                    toast.success('历史记录已清空');
                   }}
                   className="px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors text-sm flex items-center gap-2"
                 >
@@ -161,7 +163,7 @@ const History: React.FC = () => {
                     <button
                       onClick={() => toggleExpand(item.id)}
                       className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
-                      title={isExpanded ? '收起参数' : '展开参数'}
+                      aria-label={isExpanded ? '收起参数' : '展开参数'}
                     >
                       {isExpanded ? (
                         <ChevronUp className="w-4 h-4" />
@@ -170,14 +172,20 @@ const History: React.FC = () => {
                       )}
                     </button>
                     <button
-                      onClick={() => deleteFromHistory(item.id)}
+                      onClick={() => {
+                        deleteFromHistory(item.id);
+                        toast.success('已删除该条记录');
+                      }}
                       className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                      title="删除"
+                      aria-label="删除记录"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => loadFromHistory(item)}
+                      onClick={() => {
+                        loadFromHistory(item);
+                        toast.success('已载入历史参数和结果');
+                      }}
                       className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1.5 text-xs font-medium"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />

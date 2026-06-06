@@ -52,7 +52,7 @@ export const KPICard: React.FC<KPICardProps> = ({
         </div>
       </div>
       <h3 className="text-xs font-medium text-slate-500 mb-1">{title}</h3>
-      <div className="text-xl font-bold text-slate-800 mb-0.5 truncate">
+      <div className="text-xl font-bold text-slate-800 mb-0.5 truncate tabular-nums">
         {formatValue(value)}
       </div>
       {subtitle && <p className="text-xs text-slate-400 truncate">{subtitle}</p>}

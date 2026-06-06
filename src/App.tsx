@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Layout } from './components/Layout/Layout'
+import { ToastContainer } from './components/common/Toast'
 import Dashboard from './pages/Dashboard'
 import Parameters from './pages/Parameters'
 import Results from './pages/Results'
@@ -20,6 +21,7 @@ function App() {
           <Route path="/report" element={<Report />} />
         </Routes>
       </Layout>
+      <ToastContainer />
     </BrowserRouter>
   )
 }

@@ -3,6 +3,7 @@ import { Settings, RotateCcw, Save } from 'lucide-react';
 import { useAppStore } from '../store';
 import { PARAM_CONFIGS } from '../config/params';
 import { ParamSlider } from '../components/params/ParamSlider';
+import { toast } from '../components/common/Toast';
 
 const Parameters: React.FC = () => {
   const { params, updateParam, resetParams, calculate, saveToHistory } = useAppStore();
@@ -13,10 +14,12 @@ const Parameters: React.FC = () => {
 
   const handleReset = () => {
     resetParams();
+    toast.info('参数已恢复默认值');
   };
 
   const handleSave = () => {
     saveToHistory();
+    toast.success('计算结果已保存到历史记录');
   };
 
   return (

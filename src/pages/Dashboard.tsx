@@ -7,6 +7,8 @@ import {
   History,
   ArrowRight,
   Sparkles,
+  Settings,
+  Play,
 } from 'lucide-react';
 import { useAppStore } from '../store';
 import { KPICard } from '../components/common/KPICard';
@@ -14,7 +16,26 @@ import { KPICard } from '../components/common/KPICard';
 const Dashboard: React.FC = () => {
   const { result } = useAppStore();
 
-  if (!result) return null;
+  if (!result) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6">
+          <Play className="w-10 h-10 text-slate-400" />
+        </div>
+        <h2 className="text-xl font-bold text-slate-700 mb-2">开始词汇估算</h2>
+        <p className="text-slate-500 max-w-md mb-6">
+          在参数配置页面设置模型参数，系统将自动计算并展示结果
+        </p>
+        <Link
+          to="/parameters"
+          className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium inline-flex items-center gap-2"
+        >
+          <Settings className="w-4 h-4" />
+          前往参数配置
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

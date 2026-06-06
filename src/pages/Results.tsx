@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { BarChart3, PieChart, Table, TrendingUp, Layers, Type, Box, Ruler } from 'lucide-react';
+import { BarChart3, PieChart, Table, TrendingUp, Layers, Type, Box, Ruler, Settings } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useAppStore } from '../store';
 import { UnifiedLengthChart } from '../components/charts/UnifiedLengthChart';
 import { LayerDistributionChart } from '../components/charts/LayerDistributionChart';
@@ -14,7 +15,21 @@ const Results: React.FC = () => {
   const { result } = useAppStore();
   const [viewMode, setViewMode] = useState<ViewMode>('charts');
 
-  if (!result) return null;
+  if (!result) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6">
+          <BarChart3 className="w-10 h-10 text-slate-400" />
+        </div>
+        <h2 className="text-xl font-bold text-slate-700 mb-2">暂无计算结果</h2>
+        <p className="text-slate-500 max-w-md mb-6">请先在参数配置页面设置模型参数，系统会自动计算结果</p>
+        <Link to="/parameters" className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium inline-flex items-center gap-2">
+          <Settings className="w-4 h-4" />
+          前往参数配置
+        </Link>
+      </div>
+    );
+  }
 
   const layerData = useMemo(() => {
     return {

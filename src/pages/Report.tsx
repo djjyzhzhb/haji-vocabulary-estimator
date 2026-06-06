@@ -1,12 +1,28 @@
 import React, { useState } from 'react';
-import { FileText, Download, Copy, Check, TrendingUp, Clock, Sparkles, AlertCircle } from 'lucide-react';
+import { FileText, Download, Copy, Check, TrendingUp, Clock, Sparkles, AlertCircle, Settings } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useAppStore } from '../store';
+import { toast } from '../components/common/Toast';
 
 const Report: React.FC = () => {
   const { result, params } = useAppStore();
   const [copied, setCopied] = useState(false);
 
-  if (!result) return null;
+  if (!result) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6">
+          <FileText className="w-10 h-10 text-slate-400" />
+        </div>
+        <h2 className="text-xl font-bold text-slate-700 mb-2">暂无数据可生成报告</h2>
+        <p className="text-slate-500 max-w-md mb-6">请先在参数配置页面设置模型参数，计算结果后即可在此生成报告</p>
+        <Link to="/parameters" className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium inline-flex items-center gap-2">
+          <Settings className="w-4 h-4" />
+          前往参数配置
+        </Link>
+      </div>
+    );
+  }
 
   const generateReport = () => {
     const date = new Date().toLocaleString('zh-CN');
@@ -84,6 +100,7 @@ const Report: React.FC = () => {
     a.download = `vocabulary-estimation-report-${Date.now()}.md`;
     a.click();
     URL.revokeObjectURL(url);
+    toast.success('报告已下载');
   };
 
   const verificationStatus = Math.abs(7372141 - Math.round(result.total)) < 100;
