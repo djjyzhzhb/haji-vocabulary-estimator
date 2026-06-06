@@ -7,7 +7,17 @@ export default {
     container: {
       center: true,
     },
-    extend: {},
+    extend: {
+      animation: {
+        'slide-in': 'slideIn 0.25s ease-out',
+      },
+      keyframes: {
+        slideIn: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+      },
+    },
   },
   plugins: [],
 };

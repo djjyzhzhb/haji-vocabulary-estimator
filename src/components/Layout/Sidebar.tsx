@@ -8,7 +8,7 @@ import {
   History,
   FileText,
   ChevronLeft,
-  ChevronRight,
+  X,
 } from 'lucide-react';
 import { useAppStore } from '../../store';
 
@@ -21,7 +21,12 @@ const navItems = [
   { path: '/report', label: '报告生成', icon: FileText },
 ];
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  mobile?: boolean;
+  onNavigate?: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ mobile = false, onNavigate }) => {
   const location = useLocation();
   const { result } = useAppStore();
   const [collapsed, setCollapsed] = useState(false);
@@ -30,19 +35,30 @@ export const Sidebar: React.FC = () => {
     ? Math.abs(7372141 - Math.round(result.total)) < 100
     : false;
 
+  const widthClass = collapsed ? 'w-20' : 'w-72';
+
   return (
     <div
-      className={`${collapsed ? 'w-20' : 'w-72'} sticky top-0 self-start bg-white border-r border-slate-200 h-screen flex flex-col shadow-sm transition-[width] duration-300 ease-in-out overflow-hidden`}
+      className={`${widthClass} ${mobile ? 'fixed inset-y-0 left-0 z-50' : 'sticky top-0 self-start'} bg-white border-r border-slate-200 h-screen flex flex-col shadow-sm transition-[width] duration-300 ease-in-out overflow-hidden`}
     >
       <div className="p-6 border-b border-slate-100">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center flex-shrink-0">
             <BarChart3 className="w-5 h-5 text-white flex-shrink-0" />
           </div>
-          <div className="min-w-0 overflow-hidden whitespace-nowrap">
+          <div className="min-w-0 overflow-hidden whitespace-nowrap flex-1">
             <h1 className="text-lg font-semibold text-slate-800 truncate">词汇估算系统</h1>
             <p className="text-xs text-slate-500 truncate">Vocabulary Estimator</p>
           </div>
+          {mobile && (
+            <button
+              onClick={onNavigate}
+              className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors flex-shrink-0"
+              aria-label="关闭菜单"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
         </div>
 
         {result && (
@@ -72,6 +88,7 @@ export const Sidebar: React.FC = () => {
             <Link
               key={item.path}
               to={item.path}
+              onClick={onNavigate}
               className={`flex items-center h-12 px-4 rounded-xl text-sm font-medium transition-colors
                 ${isActive
                   ? 'bg-blue-50 text-blue-700 shadow-sm'
