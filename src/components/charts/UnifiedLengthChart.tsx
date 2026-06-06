@@ -78,7 +78,7 @@ export const UnifiedLengthChart: React.FC<UnifiedLengthChartProps> = ({ result }
         {chartData.map((item, idx) => {
           const separateData = Object.entries(item)
             .filter(([key]) => key !== 'length')
-            .map(([name, value]) => ({ name, value }));
+            .map(([name, value]) => ({ name, value: value as number }));
           const maxVal = Math.max(...separateData.map(d => d.value), 1);
           return (
             <div key={idx} className="bg-slate-50 rounded-xl p-4">
