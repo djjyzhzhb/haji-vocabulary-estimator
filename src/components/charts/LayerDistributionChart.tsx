@@ -30,32 +30,6 @@ export const LayerDistributionChart: React.FC<LayerDistributionChartProps> = ({ 
 
   return (
     <div className="h-80">
-      <style dangerouslySetInnerHTML={{__html: `
-        /* 彻底禁用所有默认 outline，只保留 Tooltip */
-        .recharts-pie-sector {
-          outline: none !important;
-          outline-width: 0 !important;
-          outline-style: none !important;
-          -webkit-tap-highlight-color: transparent !important;
-        }
-        
-        .recharts-pie-sector:focus,
-        .recharts-pie-sector:active,
-        .recharts-pie-sector:focus-visible {
-          outline: none !important;
-          outline-width: 0 !important;
-          outline-style: none !important;
-          box-shadow: none !important;
-        }
-        
-        .recharts-wrapper svg {
-          outline: none !important;
-        }
-        
-        .recharts-wrapper * {
-          outline: none !important;
-        }
-      `}} />
       <ResponsiveContainer width="100%" height="100%">
         <PieChart margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
           <Pie
